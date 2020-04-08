@@ -37,22 +37,15 @@ public class SmartPlayerActivity extends AppCompatActivity
     private SpeechRecognizer speechRecognizer;
     private Intent speechRecognizerIntent;
     private String keeper = "";
-
     private ImageView pausePlayBtn, nextBtn, previousBtn;
-
-
     private SeekBar seekBar;
     private Runnable runnable;
     private Handler handler;
-
-
     private TextView songNameTxt;
-
     private  ImageView imageView;
     private RelativeLayout lowerRelativeLayout;
     private Button voiceEnabledBtn;
     private String mode = "ON";
-
     private MediaPlayer myMediaPlayer;
     private int position;
     private ArrayList<File> mySongs;
@@ -65,21 +58,15 @@ public class SmartPlayerActivity extends AppCompatActivity
 
         checkVoiceCommandPermission();
 
-
-
         pausePlayBtn = findViewById(R.id.play_pause_btn);
         nextBtn = findViewById(R.id.next_btn);
         previousBtn = findViewById(R.id.previous_btn);
         imageView = findViewById(R.id.logo);
-
-
         handler = new Handler();
         seekBar = findViewById(R.id.seekbar);
-
         lowerRelativeLayout = findViewById(R.id.lower);
         voiceEnabledBtn = findViewById(R.id.voice_enabled_btn);
         songNameTxt = findViewById(R.id.songName);
-
 
 
         parentRelativeLayout = findViewById(R.id.parentRelativeLayout);
@@ -90,7 +77,10 @@ public class SmartPlayerActivity extends AppCompatActivity
 
 
 
+
         validateReceiveValuesAndStartPlaying();
+        seekBar.setMax((myMediaPlayer.getDuration()));
+        changeSeekbar();
         imageView.setBackgroundResource(R.drawable.logo);
 
 
@@ -139,11 +129,15 @@ public class SmartPlayerActivity extends AppCompatActivity
                         if (keeper.equals("pause the song") || keeper.equals("hey pause the song"))
                         {
                             playPauseSong();
+                            seekBar.setMax((myMediaPlayer.getDuration()));
+                            changeSeekbar();
                             Toast.makeText(SmartPlayerActivity.this, "Ooooooo.. Song Stops", Toast.LENGTH_LONG).show();
                         }
                         else if (keeper.equals("play the song") || keeper.equals("hey play the song"))
                         {
                             playPauseSong();
+                            seekBar.setMax((myMediaPlayer.getDuration()));
+                            changeSeekbar();
                             Toast.makeText(SmartPlayerActivity.this, "Yup, Song Start", Toast.LENGTH_LONG).show();
                         }
                         else if (keeper.equals("play next song"))
@@ -203,14 +197,19 @@ public class SmartPlayerActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+
                 if (mode.equals("ON"))
                 {
+                    seekBar.setMax((myMediaPlayer.getDuration()));
+                    changeSeekbar();
                     mode = "OFF";
                     voiceEnabledBtn.setText("Voice Enabled Mode - OFF");
                     lowerRelativeLayout.setVisibility(View.VISIBLE);
                 }
                 else
                 {
+                    seekBar.setMax((myMediaPlayer.getDuration()));
+                    changeSeekbar();
                     mode = "ON";
                     voiceEnabledBtn.setText("Voice Enabled Mode - ON");
                     lowerRelativeLayout.setVisibility(View.GONE);
@@ -225,6 +224,8 @@ public class SmartPlayerActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 playPauseSong();
+                seekBar.setMax((myMediaPlayer.getDuration()));
+                changeSeekbar();
             }
         });
 
@@ -236,6 +237,8 @@ public class SmartPlayerActivity extends AppCompatActivity
                 if (myMediaPlayer.getCurrentPosition()>0)
                 {
                     playPreviousSong();
+                    seekBar.setMax((myMediaPlayer.getDuration()));
+                    changeSeekbar();
                 }
             }
         });
@@ -247,6 +250,8 @@ public class SmartPlayerActivity extends AppCompatActivity
                 if (myMediaPlayer.getCurrentPosition()>0)
                 {
                     playNextSong();
+                    seekBar.setMax((myMediaPlayer.getDuration()));
+                    changeSeekbar();
                 }
             }
         });
@@ -288,21 +293,16 @@ public class SmartPlayerActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         Bundle bundle =intent.getExtras();
-
         mySongs = (ArrayList) bundle.getParcelableArrayList("song");
         mSongName = mySongs.get(position).getName();
         String songName = intent.getStringExtra("name");
-
         songNameTxt.setText(songName);
         songNameTxt.setSelected(true);
-
         position = bundle.getInt("position", 0);
         Uri uri = Uri.parse(mySongs.get(position).toString());
 
 
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
-        seekBar.setMax((myMediaPlayer.getDuration()));
-        changeSeekbar();
         myMediaPlayer.start();
     }
 
@@ -327,21 +327,17 @@ public class SmartPlayerActivity extends AppCompatActivity
     {
         imageView.setBackgroundResource(R.drawable.four);
 
+
         if (myMediaPlayer.isPlaying())
         {
             pausePlayBtn.setImageResource(R.drawable.play);
-            seekBar.setMax((myMediaPlayer.getDuration()));
-            changeSeekbar();
             myMediaPlayer.pause();
         }
 
         else
             {
-                pausePlayBtn.setImageResource(R.drawable.pause);
-                seekBar.setMax((myMediaPlayer.getDuration()));
-                changeSeekbar();
                 myMediaPlayer.start();
-
+                pausePlayBtn.setImageResource(R.drawable.pause);
                 imageView.setBackgroundResource(R.drawable.five);
             }
     }
@@ -358,10 +354,9 @@ public class SmartPlayerActivity extends AppCompatActivity
         Uri uri = Uri.parse((mySongs.get(position).toString()));
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
 
+
         mSongName = mySongs.get(position).toString();
         songNameTxt.setText(mSongName);
-        seekBar.setMax((myMediaPlayer.getDuration()));
-        changeSeekbar();
         myMediaPlayer.start();
 
 
@@ -376,7 +371,6 @@ public class SmartPlayerActivity extends AppCompatActivity
         else
         {
             pausePlayBtn.setImageResource(R.drawable.play);
-
             imageView.setBackgroundResource(R.drawable.five);
         }
 
@@ -396,10 +390,9 @@ public class SmartPlayerActivity extends AppCompatActivity
         Uri uri = Uri.parse((mySongs.get(position).toString()));
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
 
+
         mSongName = mySongs.get(position).toString();
         songNameTxt.setText(mSongName);
-        seekBar.setMax((myMediaPlayer.getDuration()));
-        changeSeekbar();
         myMediaPlayer.start();
 
 
@@ -428,14 +421,13 @@ public class SmartPlayerActivity extends AppCompatActivity
 
         if (myMediaPlayer.isPlaying())
         {
-             runnable = new Runnable() {
+            runnable = new Runnable() {
                 @Override
                 public void run()
                 {
                     changeSeekbar();
                 }
             };
-
             handler.postDelayed(runnable,1000);
 
         }
