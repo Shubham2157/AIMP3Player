@@ -36,53 +36,63 @@
     </RelativeLayout>
 
 
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/upper"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+
     <RelativeLayout
         android:id="@+id/lower"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/upper"
+        android:layout_below="@+id/seekbar"
         android:layout_marginTop="40dp"
         android:visibility="gone"
         android:gravity="center">
 
-        <ImageView
-            android:id="@+id/previous_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/previous"
-            android:layout_marginRight="30dp" />
+     <ImageView
+         android:id="@+id/previous_btn"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/previous"
+         android:layout_marginRight="30dp" />
 
 
-        <ImageView
-            android:id="@+id/play_pause_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/pause"
-            android:layout_marginRight="30dp"
-            android:layout_toEndOf="@+id/previous_btn" />
+     <ImageView
+         android:id="@+id/play_pause_btn"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/pause"
+         android:layout_marginRight="30dp"
+         android:layout_toEndOf="@+id/previous_btn" />
 
 
-        <ImageView
-            android:id="@+id/next_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/next"
-            android:layout_toEndOf="@+id/play_pause_btn" />
+     <ImageView
+         android:id="@+id/next_btn"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/next"
+         android:layout_toEndOf="@+id/play_pause_btn" />
 
 
-    </RelativeLayout>
+ </RelativeLayout>
 
-    <Button
-        android:id="@+id/voice_enabled_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:text="Voice Enabled Mode - ON"
-        android:background="@color/colorPrimary"
-        android:textColor="@android:color/white"
-        android:textSize="16dp"
-        android:textAllCaps="false"/>
+ <Button
+     android:id="@+id/voice_enabled_btn"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:layout_alignParentBottom="true"
+     android:layout_margin="20dp"
+     android:text="Voice Enabled Mode - ON"
+     android:background="@color/colorPrimary"
+     android:textColor="@android:color/white"
+     android:textSize="16dp"
+     android:textAllCaps="false"/>
 
 
 

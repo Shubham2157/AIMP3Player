@@ -12,6 +12,7 @@ import android.media.MicrophoneInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.speech.RecognitionListener;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,13 @@ public class SmartPlayerActivity extends AppCompatActivity
     private String keeper = "";
 
     private ImageView pausePlayBtn, nextBtn, previousBtn;
+
+
+    private SeekBar seekBar;
+    private Runnable runnable;
+    private Handler handler;
+
+
     private TextView songNameTxt;
 
     private  ImageView imageView;
@@ -62,6 +71,10 @@ public class SmartPlayerActivity extends AppCompatActivity
         nextBtn = findViewById(R.id.next_btn);
         previousBtn = findViewById(R.id.previous_btn);
         imageView = findViewById(R.id.logo);
+
+
+        handler = new Handler();
+        seekBar = findViewById(R.id.seekbar);
 
         lowerRelativeLayout = findViewById(R.id.lower);
         voiceEnabledBtn = findViewById(R.id.voice_enabled_btn);
@@ -238,6 +251,28 @@ public class SmartPlayerActivity extends AppCompatActivity
             }
         });
 
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
+            {
+                if (b)
+                {
+                    myMediaPlayer.seekTo(i);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
 
@@ -266,6 +301,8 @@ public class SmartPlayerActivity extends AppCompatActivity
 
 
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
+        seekBar.setMax((myMediaPlayer.getDuration()));
+        changeSeekbar();
         myMediaPlayer.start();
     }
 
@@ -293,12 +330,16 @@ public class SmartPlayerActivity extends AppCompatActivity
         if (myMediaPlayer.isPlaying())
         {
             pausePlayBtn.setImageResource(R.drawable.play);
+            seekBar.setMax((myMediaPlayer.getDuration()));
+            changeSeekbar();
             myMediaPlayer.pause();
         }
 
         else
             {
                 pausePlayBtn.setImageResource(R.drawable.pause);
+                seekBar.setMax((myMediaPlayer.getDuration()));
+                changeSeekbar();
                 myMediaPlayer.start();
 
                 imageView.setBackgroundResource(R.drawable.five);
@@ -319,6 +360,8 @@ public class SmartPlayerActivity extends AppCompatActivity
 
         mSongName = mySongs.get(position).toString();
         songNameTxt.setText(mSongName);
+        seekBar.setMax((myMediaPlayer.getDuration()));
+        changeSeekbar();
         myMediaPlayer.start();
 
 
@@ -355,6 +398,8 @@ public class SmartPlayerActivity extends AppCompatActivity
 
         mSongName = mySongs.get(position).toString();
         songNameTxt.setText(mSongName);
+        seekBar.setMax((myMediaPlayer.getDuration()));
+        changeSeekbar();
         myMediaPlayer.start();
 
 
@@ -371,6 +416,28 @@ public class SmartPlayerActivity extends AppCompatActivity
             pausePlayBtn.setImageResource(R.drawable.play);
 
             imageView.setBackgroundResource(R.drawable.five);
+        }
+    }
+
+
+
+
+    private void changeSeekbar()
+    {
+        seekBar.setProgress(myMediaPlayer.getCurrentPosition());
+
+        if (myMediaPlayer.isPlaying())
+        {
+             runnable = new Runnable() {
+                @Override
+                public void run()
+                {
+                    changeSeekbar();
+                }
+            };
+
+            handler.postDelayed(runnable,1000);
+
         }
     }
 
