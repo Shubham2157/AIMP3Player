@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -51,6 +50,9 @@ public class SmartPlayerActivity extends AppCompatActivity
     private ArrayList<File> mySongs;
     private String mSongName;
 
+    private TextView totalTime;
+    private TextView currentTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,9 @@ public class SmartPlayerActivity extends AppCompatActivity
         voiceEnabledBtn = findViewById(R.id.voice_enabled_btn);
         songNameTxt = findViewById(R.id.songName);
 
+        currentTime = findViewById(R.id.elapsedTimeLabel);
+        totalTime = findViewById(R.id.remainingTimeLabel);
+
 
         parentRelativeLayout = findViewById(R.id.parentRelativeLayout);
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(SmartPlayerActivity.this);
@@ -79,8 +84,14 @@ public class SmartPlayerActivity extends AppCompatActivity
 
 
         validateReceiveValuesAndStartPlaying();
-        seekBar.setMax((myMediaPlayer.getDuration()));
-        changeSeekbar();
+
+
+
+
+
+
+
+
         imageView.setBackgroundResource(R.drawable.logo);
 
 
@@ -122,6 +133,9 @@ public class SmartPlayerActivity extends AppCompatActivity
 
                 if (matchesFound != null)
                 {
+
+
+
                     if (mode.equals("ON"))
                     {
                         keeper = matchesFound.get(0);
@@ -143,13 +157,20 @@ public class SmartPlayerActivity extends AppCompatActivity
                         else if (keeper.equals("play next song"))
                         {
                             playNextSong();
+                            seekBar.setMax((myMediaPlayer.getDuration()));
+                            changeSeekbar();
                             Toast.makeText(SmartPlayerActivity.this, "Playing Next Song", Toast.LENGTH_LONG).show();
                         }
                         else if (keeper.equals("play previous song"))
                         {
                             playPreviousSong();
+                            seekBar.setMax((myMediaPlayer.getDuration()));
+                            changeSeekbar();
                             Toast.makeText(SmartPlayerActivity.this, "Playing Previous Song", Toast.LENGTH_LONG).show();
                         }
+
+                        String totTime = createTimerLabel(myMediaPlayer.getDuration());
+                        totalTime.setText(totTime);
                     }
 
                 }
@@ -226,6 +247,7 @@ public class SmartPlayerActivity extends AppCompatActivity
                 playPauseSong();
                 seekBar.setMax((myMediaPlayer.getDuration()));
                 changeSeekbar();
+
             }
         });
 
@@ -239,6 +261,8 @@ public class SmartPlayerActivity extends AppCompatActivity
                     playPreviousSong();
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
+                    String totTime = createTimerLabel(myMediaPlayer.getDuration());
+                    totalTime.setText(totTime);
                 }
             }
         });
@@ -252,6 +276,8 @@ public class SmartPlayerActivity extends AppCompatActivity
                     playNextSong();
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
+                    String totTime = createTimerLabel(myMediaPlayer.getDuration());
+                    totalTime.setText(totTime);
                 }
             }
         });
@@ -291,6 +317,7 @@ public class SmartPlayerActivity extends AppCompatActivity
             myMediaPlayer.release();
         }
 
+
         Intent intent = getIntent();
         Bundle bundle =intent.getExtras();
         mySongs = (ArrayList) bundle.getParcelableArrayList("song");
@@ -302,8 +329,15 @@ public class SmartPlayerActivity extends AppCompatActivity
         Uri uri = Uri.parse(mySongs.get(position).toString());
 
 
+
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
         myMediaPlayer.start();
+        String totTime = createTimerLabel(myMediaPlayer.getDuration());
+        totalTime.setText(totTime);
+        seekBar.setMax((myMediaPlayer.getDuration()));
+        changeSeekbar();
+        myMediaPlayer.setLooping(true);
+
     }
 
 
@@ -332,11 +366,13 @@ public class SmartPlayerActivity extends AppCompatActivity
         {
             pausePlayBtn.setImageResource(R.drawable.play);
             myMediaPlayer.pause();
+
         }
 
         else
             {
                 myMediaPlayer.start();
+                myMediaPlayer.setLooping(true);
                 pausePlayBtn.setImageResource(R.drawable.pause);
                 imageView.setBackgroundResource(R.drawable.five);
             }
@@ -358,6 +394,7 @@ public class SmartPlayerActivity extends AppCompatActivity
         mSongName = mySongs.get(position).toString();
         songNameTxt.setText(mSongName);
         myMediaPlayer.start();
+        myMediaPlayer.setLooping(true);
 
 
         imageView.setBackgroundResource(R.drawable.three);
@@ -394,6 +431,7 @@ public class SmartPlayerActivity extends AppCompatActivity
         mSongName = mySongs.get(position).toString();
         songNameTxt.setText(mSongName);
         myMediaPlayer.start();
+        myMediaPlayer.setLooping(true);
 
 
         imageView.setBackgroundResource(R.drawable.two);
@@ -426,11 +464,30 @@ public class SmartPlayerActivity extends AppCompatActivity
                 public void run()
                 {
                     changeSeekbar();
+
                 }
             };
             handler.postDelayed(runnable,1000);
 
         }
+    }
+
+
+
+
+    public String createTimerLabel(int duration)
+    {
+        String timerLabel = "";
+        int min = duration / 1000 / 60;
+        int sec = duration / 1000 % 60;
+
+        timerLabel += min + ":" ;
+
+        if (sec <10) timerLabel += "0";
+        timerLabel += sec;
+
+        return timerLabel;
+
     }
 
 
