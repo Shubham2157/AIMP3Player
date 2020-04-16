@@ -32,7 +32,7 @@ import java.util.Locale;
 
 public class SmartPlayerActivity extends AppCompatActivity
 {
-    private RelativeLayout parentRelativeLayout;
+    private RelativeLayout parentRelativeLayout1;
     private SpeechRecognizer speechRecognizer;
     private Intent speechRecognizerIntent;
     private String keeper = "";
@@ -74,7 +74,7 @@ public class SmartPlayerActivity extends AppCompatActivity
         totalTime = findViewById(R.id.remainingTimeLabel);
 
 
-        parentRelativeLayout = findViewById(R.id.parentRelativeLayout);
+        parentRelativeLayout1 = findViewById(R.id.parentRelativeLayout1);
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(SmartPlayerActivity.this);
         speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -194,7 +194,7 @@ public class SmartPlayerActivity extends AppCompatActivity
 
 
 
-        parentRelativeLayout.setOnTouchListener(new View.OnTouchListener() {
+        parentRelativeLayout1.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent)
             {
@@ -231,6 +231,7 @@ public class SmartPlayerActivity extends AppCompatActivity
                     mode = "OFF";
                     voiceEnabledBtn.setText("Voice Enabled Mode - OFF");
                     lowerRelativeLayout.setVisibility(View.VISIBLE);
+                    parentRelativeLayout1.setVisibility(View.GONE);
                 }
                 else
                 {
@@ -240,6 +241,7 @@ public class SmartPlayerActivity extends AppCompatActivity
                     mode = "ON";
                     voiceEnabledBtn.setText("Voice Enabled Mode - ON");
                     lowerRelativeLayout.setVisibility(View.GONE);
+                    parentRelativeLayout1.setVisibility(View.VISIBLE);
                 }
 
             }

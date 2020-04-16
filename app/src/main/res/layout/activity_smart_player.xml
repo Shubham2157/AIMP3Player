@@ -106,6 +106,28 @@
 
  </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/parentRelativeLayout1"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/lower"
+        android:layout_marginLeft="90dp"
+        android:layout_marginTop="60dp"
+        android:background="@color/colorPrimary"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="12dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="Touch here four listning">
+        </TextView>
+    </RelativeLayout>
+
  <Button
      android:id="@+id/voice_enabled_btn"
      android:layout_width="match_parent"
