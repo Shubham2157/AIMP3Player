@@ -41,7 +41,7 @@ public class SmartPlayerActivity extends AppCompatActivity
     private Runnable runnable;
     private Handler handler;
     private TextView songNameTxt;
-    private  ImageView imageView;
+    private ImageView imageView;
     private RelativeLayout lowerRelativeLayout;
     private Button voiceEnabledBtn;
     private String mode = "ON";
@@ -49,7 +49,6 @@ public class SmartPlayerActivity extends AppCompatActivity
     private int position;
     private ArrayList<File> mySongs;
     private String mSongName;
-
     private TextView totalTime;
     private TextView currentTime;
 
@@ -69,73 +68,41 @@ public class SmartPlayerActivity extends AppCompatActivity
         lowerRelativeLayout = findViewById(R.id.lower);
         voiceEnabledBtn = findViewById(R.id.voice_enabled_btn);
         songNameTxt = findViewById(R.id.songName);
-
         currentTime = findViewById(R.id.elapsedTimeLabel);
         totalTime = findViewById(R.id.remainingTimeLabel);
-
-
         parentRelativeLayout1 = findViewById(R.id.parentRelativeLayout1);
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(SmartPlayerActivity.this);
         speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
-
-
-
         validateReceiveValuesAndStartPlaying();
-
-
-
-
-
-
-
-
         imageView.setBackgroundResource(R.drawable.logo);
-
-
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
-            public void onReadyForSpeech(Bundle bundle) {
-
-            }
+            public void onReadyForSpeech(Bundle bundle) { }
 
             @Override
-            public void onBeginningOfSpeech() {
-
-            }
+            public void onBeginningOfSpeech() { }
 
             @Override
-            public void onRmsChanged(float v) {
-
-            }
+            public void onRmsChanged(float v) { }
 
             @Override
-            public void onBufferReceived(byte[] bytes) {
-
-            }
+            public void onBufferReceived(byte[] bytes) { }
 
             @Override
-            public void onEndOfSpeech() {
-
-            }
+            public void onEndOfSpeech() { }
 
             @Override
-            public void onError(int i) {
-
-            }
+            public void onError(int i) { }
 
             @Override
             public void onResults(Bundle bundle)
             {
                 ArrayList<String> matchesFound = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-
                 if (matchesFound != null)
                 {
-
-
-
                     if (mode.equals("ON"))
                     {
                         keeper = matchesFound.get(0);
@@ -172,27 +139,18 @@ public class SmartPlayerActivity extends AppCompatActivity
                             updateDuration();
                             Toast.makeText(SmartPlayerActivity.this, "Playing Previous Song", Toast.LENGTH_LONG).show();
                         }
-
                         String totTime = createTimerLabel(myMediaPlayer.getDuration());
                         totalTime.setText(totTime);
                     }
-
                 }
             }
 
             @Override
-            public void onPartialResults(Bundle bundle) {
-
-            }
+            public void onPartialResults(Bundle bundle) { }
 
             @Override
-            public void onEvent(int i, Bundle bundle) {
-
-            }
+            public void onEvent(int i, Bundle bundle) { }
         });
-
-
-
 
         parentRelativeLayout1.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -214,9 +172,6 @@ public class SmartPlayerActivity extends AppCompatActivity
 
             }
         });
-
-
-
 
         voiceEnabledBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,8 +201,6 @@ public class SmartPlayerActivity extends AppCompatActivity
 
             }
         });
-
-
         pausePlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -259,8 +212,6 @@ public class SmartPlayerActivity extends AppCompatActivity
 
             }
         });
-
-
         previousBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -276,7 +227,6 @@ public class SmartPlayerActivity extends AppCompatActivity
                 }
             }
         });
-
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -293,7 +243,6 @@ public class SmartPlayerActivity extends AppCompatActivity
             }
         });
 
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b)
@@ -305,20 +254,12 @@ public class SmartPlayerActivity extends AppCompatActivity
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) { }
         });
-
     }
-
-
-
 
     private void validateReceiveValuesAndStartPlaying()
     {
@@ -327,8 +268,6 @@ public class SmartPlayerActivity extends AppCompatActivity
             myMediaPlayer.stop();
             myMediaPlayer.release();
         }
-
-
         Intent intent = getIntent();
         Bundle bundle =intent.getExtras();
         mySongs = (ArrayList) bundle.getParcelableArrayList("song");
@@ -338,9 +277,6 @@ public class SmartPlayerActivity extends AppCompatActivity
         songNameTxt.setSelected(true);
         position = bundle.getInt("position", 0);
         Uri uri = Uri.parse(mySongs.get(position).toString());
-
-
-
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
         myMediaPlayer.start();
         String totTime = createTimerLabel(myMediaPlayer.getDuration());
@@ -349,11 +285,7 @@ public class SmartPlayerActivity extends AppCompatActivity
         changeSeekbar();
         updateDuration();
         myMediaPlayer.setLooping(true);
-
     }
-
-
-
 
     private void checkVoiceCommandPermission()
     {
@@ -372,8 +304,6 @@ public class SmartPlayerActivity extends AppCompatActivity
     private  void playPauseSong()
     {
         imageView.setBackgroundResource(R.drawable.four);
-
-
         if (myMediaPlayer.isPlaying())
         {
             pausePlayBtn.setImageResource(R.drawable.play);
@@ -396,19 +326,13 @@ public class SmartPlayerActivity extends AppCompatActivity
         myMediaPlayer.pause();
         myMediaPlayer.stop();
         myMediaPlayer.release();
-
         position = ((position+1)%mySongs.size());
-
         Uri uri = Uri.parse((mySongs.get(position).toString()));
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
-
-
         mSongName = mySongs.get(position).toString();
         songNameTxt.setText(mSongName);
         myMediaPlayer.start();
         myMediaPlayer.setLooping(true);
-
-
         imageView.setBackgroundResource(R.drawable.three);
 
         if (myMediaPlayer.isPlaying())
@@ -422,8 +346,6 @@ public class SmartPlayerActivity extends AppCompatActivity
             pausePlayBtn.setImageResource(R.drawable.play);
             imageView.setBackgroundResource(R.drawable.five);
         }
-
-
     }
 
 
@@ -433,42 +355,30 @@ public class SmartPlayerActivity extends AppCompatActivity
         myMediaPlayer.pause();
         myMediaPlayer.stop();
         myMediaPlayer.release();
-
         position = ((position-1)<0 ? (mySongs.size()-1) : (position-1));
-
         Uri uri = Uri.parse((mySongs.get(position).toString()));
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
-
-
         mSongName = mySongs.get(position).toString();
         songNameTxt.setText(mSongName);
         myMediaPlayer.start();
         myMediaPlayer.setLooping(true);
-
-
         imageView.setBackgroundResource(R.drawable.two);
 
         if (myMediaPlayer.isPlaying())
         {
             pausePlayBtn.setImageResource(R.drawable.pause);
-
         }
 
         else
         {
             pausePlayBtn.setImageResource(R.drawable.play);
-
             imageView.setBackgroundResource(R.drawable.five);
         }
     }
 
-
-
-
     private void changeSeekbar()
     {
         seekBar.setProgress(myMediaPlayer.getCurrentPosition());
-
         if (myMediaPlayer.isPlaying())
         {
             runnable = new Runnable() {
@@ -480,16 +390,12 @@ public class SmartPlayerActivity extends AppCompatActivity
                 }
             };
             handler.postDelayed(runnable,1000);
-
-
-
         }
     }
 
     private void updateDuration()
     {
         currentTime.setText(createTimerLabel(myMediaPlayer.getCurrentPosition()));
-
         if (myMediaPlayer.isPlaying())
         {
             runnable = new Runnable() {
@@ -499,32 +405,19 @@ public class SmartPlayerActivity extends AppCompatActivity
                    updateDuration();
                 }
             };
-
             handler.postDelayed(runnable,100);
         }
     }
-
-
-
-
-
-
-
 
     public String createTimerLabel(int duration)
     {
         String timerLabel = "";
         int min = duration / 1000 / 60;
         int sec = duration / 1000 % 60;
-
         timerLabel += min + ":" ;
-
         if (sec <10) timerLabel += "0";
         timerLabel += sec;
-
         return timerLabel;
 
     }
-
-
 }
