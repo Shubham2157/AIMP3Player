@@ -140,32 +140,36 @@ public class SmartPlayerActivity extends AppCompatActivity
                     {
                         keeper = matchesFound.get(0);
 
-                        if (keeper.equals("pause the song") || keeper.equals("hey pause the song"))
+                        if (keeper.equals("pause") || keeper.equals("pause the song"))
                         {
                             playPauseSong();
                             seekBar.setMax((myMediaPlayer.getDuration()));
                             changeSeekbar();
+                            updateDuration();
                             Toast.makeText(SmartPlayerActivity.this, "Ooooooo.. Song Stops", Toast.LENGTH_LONG).show();
                         }
-                        else if (keeper.equals("play the song") || keeper.equals("hey play the song"))
+                        else if (keeper.equals("play") || keeper.equals("play the song"))
                         {
                             playPauseSong();
                             seekBar.setMax((myMediaPlayer.getDuration()));
                             changeSeekbar();
+                            updateDuration();
                             Toast.makeText(SmartPlayerActivity.this, "Yup, Song Start", Toast.LENGTH_LONG).show();
                         }
-                        else if (keeper.equals("play next song"))
+                        else if (keeper.equals("play next song") || keeper.equals("next song"))
                         {
                             playNextSong();
                             seekBar.setMax((myMediaPlayer.getDuration()));
                             changeSeekbar();
+                            updateDuration();
                             Toast.makeText(SmartPlayerActivity.this, "Playing Next Song", Toast.LENGTH_LONG).show();
                         }
-                        else if (keeper.equals("play previous song"))
+                        else if (keeper.equals("play previous song") || keeper.equals("previous song"))
                         {
                             playPreviousSong();
                             seekBar.setMax((myMediaPlayer.getDuration()));
                             changeSeekbar();
+                            updateDuration();
                             Toast.makeText(SmartPlayerActivity.this, "Playing Previous Song", Toast.LENGTH_LONG).show();
                         }
 
@@ -223,6 +227,7 @@ public class SmartPlayerActivity extends AppCompatActivity
                 {
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
+                    updateDuration();
                     mode = "OFF";
                     voiceEnabledBtn.setText("Voice Enabled Mode - OFF");
                     lowerRelativeLayout.setVisibility(View.VISIBLE);
@@ -231,6 +236,7 @@ public class SmartPlayerActivity extends AppCompatActivity
                 {
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
+                    updateDuration();
                     mode = "ON";
                     voiceEnabledBtn.setText("Voice Enabled Mode - ON");
                     lowerRelativeLayout.setVisibility(View.GONE);
@@ -247,6 +253,7 @@ public class SmartPlayerActivity extends AppCompatActivity
                 playPauseSong();
                 seekBar.setMax((myMediaPlayer.getDuration()));
                 changeSeekbar();
+                updateDuration();
 
             }
         });
@@ -261,6 +268,7 @@ public class SmartPlayerActivity extends AppCompatActivity
                     playPreviousSong();
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
+                    updateDuration();
                     String totTime = createTimerLabel(myMediaPlayer.getDuration());
                     totalTime.setText(totTime);
                 }
@@ -276,6 +284,7 @@ public class SmartPlayerActivity extends AppCompatActivity
                     playNextSong();
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
+                    updateDuration();
                     String totTime = createTimerLabel(myMediaPlayer.getDuration());
                     totalTime.setText(totTime);
                 }
@@ -336,6 +345,7 @@ public class SmartPlayerActivity extends AppCompatActivity
         totalTime.setText(totTime);
         seekBar.setMax((myMediaPlayer.getDuration()));
         changeSeekbar();
+        updateDuration();
         myMediaPlayer.setLooping(true);
 
     }
@@ -469,8 +479,32 @@ public class SmartPlayerActivity extends AppCompatActivity
             };
             handler.postDelayed(runnable,1000);
 
+
+
         }
     }
+
+    private void updateDuration()
+    {
+        currentTime.setText(createTimerLabel(myMediaPlayer.getCurrentPosition()));
+
+        if (myMediaPlayer.isPlaying())
+        {
+            runnable = new Runnable() {
+                @Override
+                public void run()
+                {
+                   updateDuration();
+                }
+            };
+
+            handler.postDelayed(runnable,100);
+        }
+    }
+
+
+
+
 
 
 
