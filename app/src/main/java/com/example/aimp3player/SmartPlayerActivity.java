@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Notification;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -297,6 +299,19 @@ public class SmartPlayerActivity extends AppCompatActivity
                 startActivity(intent);
                 finish();
             }
+
+        }
+        else
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle("Closing application")
+                    .setMessage("Please Provide MicroPhone permission from app settings")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).setNegativeButton("No", null).show();
         }
     }
 

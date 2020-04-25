@@ -124,7 +124,7 @@
             android:layout_marginLeft="12dp"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:text="Touch here four listning">
+            android:text="Touch here for listning">
         </TextView>
     </RelativeLayout>
 
