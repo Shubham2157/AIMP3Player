@@ -1,6 +1,7 @@
 package com.example.aimp3player;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -32,8 +33,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class SmartPlayerActivity extends AppCompatActivity
-{
+public class SmartPlayerActivity extends AppCompatActivity {
+    private static final int MY_PERMISSIONS_RECORD_AUDIO = 1;
     private RelativeLayout parentRelativeLayout1;
     private SpeechRecognizer speechRecognizer;
     private Intent speechRecognizerIntent;
@@ -59,7 +60,9 @@ public class SmartPlayerActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smart_player);
 
-        checkVoiceCommandPermission();
+        requestAudioPermissions();
+
+
 
         pausePlayBtn = findViewById(R.id.play_pause_btn);
         nextBtn = findViewById(R.id.next_btn);
@@ -82,59 +85,55 @@ public class SmartPlayerActivity extends AppCompatActivity
         imageView.setBackgroundResource(R.drawable.logo);
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
-            public void onReadyForSpeech(Bundle bundle) { }
+            public void onReadyForSpeech(Bundle bundle) {
+            }
 
             @Override
-            public void onBeginningOfSpeech() { }
+            public void onBeginningOfSpeech() {
+            }
 
             @Override
-            public void onRmsChanged(float v) { }
+            public void onRmsChanged(float v) {
+            }
 
             @Override
-            public void onBufferReceived(byte[] bytes) { }
+            public void onBufferReceived(byte[] bytes) {
+            }
 
             @Override
-            public void onEndOfSpeech() { }
+            public void onEndOfSpeech() {
+            }
 
             @Override
-            public void onError(int i) { }
+            public void onError(int i) {
+            }
 
             @Override
-            public void onResults(Bundle bundle)
-            {
+            public void onResults(Bundle bundle) {
                 ArrayList<String> matchesFound = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                if (matchesFound != null)
-                {
-                    if (mode.equals("ON"))
-                    {
+                if (matchesFound != null) {
+                    if (mode.equals("ON")) {
                         keeper = matchesFound.get(0);
 
-                        if (keeper.equals("pause") || keeper.equals("pause the song"))
-                        {
+                        if (keeper.equals("pause") || keeper.equals("pause the song")) {
                             playPauseSong();
                             seekBar.setMax((myMediaPlayer.getDuration()));
                             changeSeekbar();
                             updateDuration();
                             Toast.makeText(SmartPlayerActivity.this, "Ooooooo.. Song Stops", Toast.LENGTH_LONG).show();
-                        }
-                        else if (keeper.equals("play") || keeper.equals("play the song"))
-                        {
+                        } else if (keeper.equals("play") || keeper.equals("play the song")) {
                             playPauseSong();
                             seekBar.setMax((myMediaPlayer.getDuration()));
                             changeSeekbar();
                             updateDuration();
                             Toast.makeText(SmartPlayerActivity.this, "Yup, Song Start", Toast.LENGTH_LONG).show();
-                        }
-                        else if (keeper.equals("play next song") || keeper.equals("next song"))
-                        {
+                        } else if (keeper.equals("play next song") || keeper.equals("next song")) {
                             playNextSong();
                             seekBar.setMax((myMediaPlayer.getDuration()));
                             changeSeekbar();
                             updateDuration();
                             Toast.makeText(SmartPlayerActivity.this, "Playing Next Song", Toast.LENGTH_LONG).show();
-                        }
-                        else if (keeper.equals("play previous song") || keeper.equals("previous song"))
-                        {
+                        } else if (keeper.equals("play previous song") || keeper.equals("previous song")) {
                             playPreviousSong();
                             seekBar.setMax((myMediaPlayer.getDuration()));
                             changeSeekbar();
@@ -148,18 +147,18 @@ public class SmartPlayerActivity extends AppCompatActivity
             }
 
             @Override
-            public void onPartialResults(Bundle bundle) { }
+            public void onPartialResults(Bundle bundle) {
+            }
 
             @Override
-            public void onEvent(int i, Bundle bundle) { }
+            public void onEvent(int i, Bundle bundle) {
+            }
         });
 
         parentRelativeLayout1.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent)
-            {
-                switch (motionEvent.getAction())
-                {
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         speechRecognizer.startListening(speechRecognizerIntent);
                         keeper = "";
@@ -177,11 +176,9 @@ public class SmartPlayerActivity extends AppCompatActivity
 
         voiceEnabledBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
 
-                if (mode.equals("ON"))
-                {
+                if (mode.equals("ON")) {
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
                     updateDuration();
@@ -189,9 +186,7 @@ public class SmartPlayerActivity extends AppCompatActivity
                     voiceEnabledBtn.setText("Voice Enabled Mode - OFF");
                     lowerRelativeLayout.setVisibility(View.VISIBLE);
                     parentRelativeLayout1.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
                     updateDuration();
@@ -205,8 +200,7 @@ public class SmartPlayerActivity extends AppCompatActivity
         });
         pausePlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 playPauseSong();
                 seekBar.setMax((myMediaPlayer.getDuration()));
                 changeSeekbar();
@@ -216,10 +210,8 @@ public class SmartPlayerActivity extends AppCompatActivity
         });
         previousBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                if (myMediaPlayer.getCurrentPosition()>0)
-                {
+            public void onClick(View view) {
+                if (myMediaPlayer.getCurrentPosition() > 0) {
                     playPreviousSong();
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
@@ -231,10 +223,8 @@ public class SmartPlayerActivity extends AppCompatActivity
         });
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                if (myMediaPlayer.getCurrentPosition()>0)
-                {
+            public void onClick(View view) {
+                if (myMediaPlayer.getCurrentPosition() > 0) {
                     playNextSong();
                     seekBar.setMax((myMediaPlayer.getDuration()));
                     changeSeekbar();
@@ -247,31 +237,35 @@ public class SmartPlayerActivity extends AppCompatActivity
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
-            {
-                if (b)
-                {
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (b) {
                     myMediaPlayer.seekTo(i);
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
     }
 
-    private void validateReceiveValuesAndStartPlaying()
-    {
-        if (myMediaPlayer != null)
-        {
+    @Override
+    protected void onDestroy() {
+        myMediaPlayer.stop();
+        super.onDestroy();
+    }
+
+    private void validateReceiveValuesAndStartPlaying() {
+        if (myMediaPlayer != null) {
             myMediaPlayer.stop();
             myMediaPlayer.release();
         }
         Intent intent = getIntent();
-        Bundle bundle =intent.getExtras();
+        Bundle bundle = intent.getExtras();
         mySongs = (ArrayList) bundle.getParcelableArrayList("song");
         mSongName = mySongs.get(position).getName();
         String songName = intent.getStringExtra("name");
@@ -287,22 +281,18 @@ public class SmartPlayerActivity extends AppCompatActivity
         changeSeekbar();
         updateDuration();
         myMediaPlayer.setLooping(true);
+
     }
 
-    private void checkVoiceCommandPermission()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            if (!(ContextCompat.checkSelfPermission(SmartPlayerActivity.this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED))
-            {
+    private void checkVoiceCommandPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!(ContextCompat.checkSelfPermission(SmartPlayerActivity.this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)) {
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_SETTINGS, Uri.parse("package:" + getPackageName()));
                 startActivity(intent);
                 finish();
             }
 
-        }
-        else
-        {
+        } else {
             new AlertDialog.Builder(this)
                     .setTitle("Closing application")
                     .setMessage("Please Provide MicroPhone permission from app settings")
@@ -316,32 +306,26 @@ public class SmartPlayerActivity extends AppCompatActivity
     }
 
 
-    private  void playPauseSong()
-    {
+    private void playPauseSong() {
         imageView.setBackgroundResource(R.drawable.four);
-        if (myMediaPlayer.isPlaying())
-        {
+        if (myMediaPlayer.isPlaying()) {
             pausePlayBtn.setImageResource(R.drawable.play);
             myMediaPlayer.pause();
 
+        } else {
+            myMediaPlayer.start();
+            myMediaPlayer.setLooping(true);
+            pausePlayBtn.setImageResource(R.drawable.pause);
+            imageView.setBackgroundResource(R.drawable.five);
         }
-
-        else
-            {
-                myMediaPlayer.start();
-                myMediaPlayer.setLooping(true);
-                pausePlayBtn.setImageResource(R.drawable.pause);
-                imageView.setBackgroundResource(R.drawable.five);
-            }
     }
 
 
-    private void playNextSong()
-    {
+    private void playNextSong() {
         myMediaPlayer.pause();
         myMediaPlayer.stop();
         myMediaPlayer.release();
-        position = ((position+1)%mySongs.size());
+        position = ((position + 1) % mySongs.size());
         Uri uri = Uri.parse((mySongs.get(position).toString()));
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
         mSongName = mySongs.get(position).toString();
@@ -350,27 +334,21 @@ public class SmartPlayerActivity extends AppCompatActivity
         myMediaPlayer.setLooping(true);
         imageView.setBackgroundResource(R.drawable.three);
 
-        if (myMediaPlayer.isPlaying())
-        {
+        if (myMediaPlayer.isPlaying()) {
             pausePlayBtn.setImageResource(R.drawable.pause);
 
-        }
-
-        else
-        {
+        } else {
             pausePlayBtn.setImageResource(R.drawable.play);
             imageView.setBackgroundResource(R.drawable.five);
         }
     }
 
 
-
-    private void playPreviousSong()
-    {
+    private void playPreviousSong() {
         myMediaPlayer.pause();
         myMediaPlayer.stop();
         myMediaPlayer.release();
-        position = ((position-1)<0 ? (mySongs.size()-1) : (position-1));
+        position = ((position - 1) < 0 ? (mySongs.size() - 1) : (position - 1));
         Uri uri = Uri.parse((mySongs.get(position).toString()));
         myMediaPlayer = MediaPlayer.create(SmartPlayerActivity.this, uri);
         mSongName = mySongs.get(position).toString();
@@ -379,60 +357,74 @@ public class SmartPlayerActivity extends AppCompatActivity
         myMediaPlayer.setLooping(true);
         imageView.setBackgroundResource(R.drawable.two);
 
-        if (myMediaPlayer.isPlaying())
-        {
+        if (myMediaPlayer.isPlaying()) {
             pausePlayBtn.setImageResource(R.drawable.pause);
-        }
-
-        else
-        {
+        } else {
             pausePlayBtn.setImageResource(R.drawable.play);
             imageView.setBackgroundResource(R.drawable.five);
         }
     }
 
-    private void changeSeekbar()
-    {
+    private void changeSeekbar() {
         seekBar.setProgress(myMediaPlayer.getCurrentPosition());
-        if (myMediaPlayer.isPlaying())
-        {
+        if (myMediaPlayer.isPlaying()) {
             runnable = new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     changeSeekbar();
 
                 }
             };
-            handler.postDelayed(runnable,1000);
+            handler.postDelayed(runnable, 1000);
         }
     }
 
-    private void updateDuration()
-    {
+    private void updateDuration() {
         currentTime.setText(createTimerLabel(myMediaPlayer.getCurrentPosition()));
-        if (myMediaPlayer.isPlaying())
-        {
+        if (myMediaPlayer.isPlaying()) {
             runnable = new Runnable() {
                 @Override
-                public void run()
-                {
-                   updateDuration();
+                public void run() {
+                    updateDuration();
                 }
             };
-            handler.postDelayed(runnable,100);
+            handler.postDelayed(runnable, 100);
         }
     }
 
-    public String createTimerLabel(int duration)
-    {
+    public String createTimerLabel(int duration) {
         String timerLabel = "";
         int min = duration / 1000 / 60;
         int sec = duration / 1000 % 60;
-        timerLabel += min + ":" ;
-        if (sec <10) timerLabel += "0";
+        timerLabel += min + ":";
+        if (sec < 10) timerLabel += "0";
         timerLabel += sec;
         return timerLabel;
 
+    }
+
+    private void requestAudioPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            //When permission is not granted by user, show them message why this permission is needed.
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.RECORD_AUDIO)) {
+                Toast.makeText(this, "Please grant permissions to record audio", Toast.LENGTH_LONG).show();
+
+                //Give user option to still opt-in the permissions
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
+
+            } else {
+                // Show user dialog to grant permission to record audio
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
+            }
+
+        }
     }
 }
