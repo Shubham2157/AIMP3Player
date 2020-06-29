@@ -134,7 +134,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="60dp"
         android:background="@android:color/holo_blue_light"
-        android:layout_below="@+id/parentRelativeLayout1">
+        android:layout_above="@+id/voice_enabled_btn">
         <TextView
             android:id="@+id/inst"
             android:layout_width="300dp"

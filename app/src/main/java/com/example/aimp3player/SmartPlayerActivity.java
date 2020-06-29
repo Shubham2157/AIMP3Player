@@ -411,7 +411,7 @@ public class SmartPlayerActivity extends AppCompatActivity {
             //When permission is not granted by user, show them message why this permission is needed.
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.RECORD_AUDIO)) {
-                Toast.makeText(this, "Please grant permissions to record audio", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please grant permissions to use AI Feature", Toast.LENGTH_LONG).show();
 
                 //Give user option to still opt-in the permissions
                 ActivityCompat.requestPermissions(this,
@@ -427,4 +427,5 @@ public class SmartPlayerActivity extends AppCompatActivity {
 
         }
     }
+
 }
